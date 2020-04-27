@@ -28,4 +28,11 @@ public class StringUtil {
 		return value;
 	}
 
+	public static boolean isNotEmpty(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		return !"".equals(String.valueOf(obj).trim());
+	}
 }

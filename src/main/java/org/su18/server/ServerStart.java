@@ -8,7 +8,7 @@ import java.util.Enumeration;
 
 public class ServerStart {
 
-	public static String addr = getLocalIpByNetCard();
+	public static String addr = getIpAddr();
 
 	public static int rmiPort = Integer.parseInt(StringUtil.getCurrentPropertiesValue("rmi.port"));
 
@@ -30,7 +30,7 @@ public class ServerStart {
 	}
 
 	/**
-	 * 直接根据第一个网卡地址作为其内网ipv4地址
+	 * 直接根据第一个网卡地址作为其内网ipv4地址，用作测试使用
 	 *
 	 * @return 返回 ip 地址
 	 */
@@ -52,6 +52,14 @@ public class ServerStart {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String getIpAddr() {
+		String ip = StringUtil.getCurrentPropertiesValue("server.ip");
+		if (!StringUtil.isNotEmpty(ip)) {
+			ip = getLocalIpByNetCard();
+		}
+		return ip;
 	}
 
 
