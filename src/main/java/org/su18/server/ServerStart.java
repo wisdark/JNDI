@@ -30,7 +30,7 @@ public class ServerStart {
 	}
 
 	/**
-	 * 直接根据第一个网卡地址作为其内网ipv4地址，用作测试使用
+	 * 默认获取外网IP,在没有外网IP时获取内网IP
 	 *
 	 * @return 返回 ip 地址
 	 */
@@ -42,12 +42,14 @@ public class ServerStart {
 					if (item.isLoopback() || !item.isUp()) {
 						continue;
 					}
-					if (address.getAddress() instanceof Inet4Address) {
+					if (address.getAddress() instanceof Inet4Address && !address.getAddress().isSiteLocalAddress()
+							&& !address.getAddress().isLinkLocalAddress()) {
 						Inet4Address inet4Address = (Inet4Address) address.getAddress();
 						return inet4Address.getHostAddress();
 					}
 				}
 			}
+			// 如果外网IP不存在，那么获取内网IP
 			return InetAddress.getLocalHost().getHostAddress();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
